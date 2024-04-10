@@ -1,0 +1,21 @@
+Package: GST
+Title: This package includes a global statistics test which combine multiple primary outcomes in clinical trials
+Version: 0.0.0.9000
+Authors@R: 
+     c(person("Peng", "Huang", email = "phuan12@jhmi.edu", role = "cre"),
+       person("Jiaxin", "Huang", email = "jhuan206@jh.edu", role = "aut"))
+Description: Global statistics test (GST) can be applied in statistical design and data analysis 
+  when multiple primary outcomes are assess simultaneously to determine whether one treatment should be recommended for use.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Imports: 
+    magrittr,
+    stats
+

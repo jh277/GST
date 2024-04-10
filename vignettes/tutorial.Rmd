@@ -1,0 +1,191 @@
+---
+title: "GST Tutorial"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{GST Tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+```{r setup}
+library(GST)
+library(knitr)
+```
+
+## Introduction to the use of Global Statistical Approach
+
+Determination whether one treatment is preferred over others is a major goal of many clinical studies but can be complicated by the situation when no single outcome is sufficient to make the judgement. This package a useful global statistics test technique and the corresponding global treatment effect (GTE) meausre for assessing treatment's global preference when multiple outcomes are evaluated together.
+
+Measure of treatment benefit is defined as $\theta = p - q$ which is the difference between the probability that the treatment is better than the control and the probability that the control is better than the treatment. When there are multiple outcomes, compute such $\theta$ for each outcome and take an average $\bar{\theta}$ of these values.This $\bar{\theta}$ value is called the global treatment effect (GTE)
+
+### Part I. Determination of the $\bar{\theta}$
+
+Null hypothesis: $\bar{\theta}$ = 0
+Alternative hypothesis: $\bar{\theta}$ = $\bar{\theta_a}$
+
+Here we describe how to compute $\bar{\theta}$ from pilot data (if they are available) or summary statistics (if no pilot data is available)
+
+**When there are pilot data**
+
+Example: x1 is 100 random samples from a t-distribution with 50 degrees of freedom, while x2 is 100 random from a t-distribution with 2 degrees of freedom. We treat x1 as outcomes from group 1 and x2 as outcomes from group 2 in pilot data. The $\bar{\theta}$ is calculated as follow:
+
+```{r}
+set.seed(123)
+x1<- rt(100, 50, ncp = 10)
+x2<- rt(100, 2, ncp = 10.3)
+# use original data:
+theta(x1,x2) 
+# effect size when comparing x1 and x2:
+abs(mean(x1)-mean(x2))/sqrt(var(c(x1,x2)))
+```
+
+
+**When there is no pilot data, or we only have summary statistics**
+
+Example: mu1 and stdev1 are mean and standard deviation from group 1 while mu2 and stdev 2 are mean and standard deviation from group 2.
+
+```{r}
+mu1 = c(30, 40, 50)
+stdev1 = c(3, 4, 5)
+mu2 = c(10, 40, 70)
+stdev2 = c(5, 6, 7)
+
+summary_data <- data.frame(
+  Outcome_Scale = c("Outcome 1", "Outcome 2", "Outcome 3"),
+  Placebo_Mean = mu1,
+  Placebo_SD = stdev1,
+  Treatment_Mean = mu2,
+  Treatment_SD = stdev2
+)
+
+kable(summary_data, 
+      col.names = c("Outcome scale", "Placebo Mean", "Placebo SD", "Treatment Mean", "Treatment SD"), 
+      align = 'c')
+```
+
+If we assume observations have normal distribution:
+```{r}
+theta<- 2*pnorm((mu2-mu1)/sqrt(stdev1^2+stdev2^2))-1
+```
+
+### Part II. Determination of sample size
+
+**Sample size estimation when no historical data are available**
+
+We could use N.GSTnoData function to derive the sample size when there is no pilot data. In other words, we only have summary statistics.
+
+function required inputs are:
+
+k=number of endpoints
+  # r0=n2/n1 randomization ratio
+  # GTE=target GTE where power is controlled
+  # sigma2 = upper bound of variances F1(X2) and F2(X1)
+  # rho = upper bound of absolute correlation between F1(X2) and F2(X1)
+  # alpha = type I error 
+  # power = desired statistical power 
+  # test.side = 1(one-sided test) or 2 (two-sided test)
+```{r}
+theta<- 2*pnorm((mu2-mu1)/sqrt(stdev1^2+stdev2^2))-1
+GTE<- mean(theta)
+  k<- length(mu1)
+  alpha<- 0.05
+  beta<- seq(0.05,0.2,0.05)
+  test.side<- 2
+  r0<- 1
+  rho<- c(0.1,0.3)
+  sigma2<- min((1-min(theta^2))/4, 1/12) 
+  N.GST<- N.GSTnoData(k, r0, GTE, 
+    sigma2, rho, alpha, beta, test.side)
+```
+
+**Sample size estimation when some historical data are available**
+
+We could use N.GSTwPilotData function to derive the sample size when there is some pilot data. 
+
+```{r}
+k<-3
+n1<- 40
+N<- 100
+n2<- N-n1
+x1<- rnorm(N)
+data<- cbind(x1/sqrt(2)+rnorm(N)/sqrt(2),
+              x1/sqrt(2)+rnorm(N)/sqrt(2),
+              x1/sqrt(2)+rnorm(N)/sqrt(2))
+x2<- rnorm(n2, mean=0.6)
+data2<- cbind(x2/sqrt(2)+rnorm(n2)/sqrt(2),
+              x2/sqrt(2)+rnorm(n2)/sqrt(2),
+              x2/sqrt(2)+rnorm(n2)/sqrt(2))
+data[(n1+1):N,]<- data[(n1+1):N,]+data2
+# calculate sample size
+N.GSTwPilotData(data, m1=n1, 
+  r0=n2/n1, test.side=2, alpha=0.05, power=0.9, GTE=NA)
+```
+
+### Part III. Use of global statistical testing in data analysis
+
+In previous sections, we've determined appropriate $\bar{\theta_a}$ for the target magnitude of treatment effect,  set up the hypotheses, computed the sample size needed, and now, we can test the treatment's global effect by determining test statistics using GST.parameter function.
+
+The p-value of the GST is obtained by comparing the value of Z to critical values from normal distribution.
+
+```{r}
+k<-3 # number of endpoints
+n1<- 40 # sample size in treatment 1
+N<- 100 # total sample size
+n2<- N-n1
+x1<- rnorm(N)
+dataset<- cbind(x1/sqrt(2)+rnorm(N)/sqrt(2),
+              x1/sqrt(2)+rnorm(N)/sqrt(2),
+              x1/sqrt(2)+rnorm(N)/sqrt(2))
+x2<- rnorm(n2, mean=0.6)
+data2<- cbind(x2/sqrt(2)+rnorm(n2)/sqrt(2),
+              x2/sqrt(2)+rnorm(n2)/sqrt(2),
+              x2/sqrt(2)+rnorm(n2)/sqrt(2))
+dataset[(n1+1):N,]<- dataset[(n1+1):N,]+data2
+# get p-value from GST:
+x <- GST.parameter(dataset, n1)
+Z <- sum(x$theta) * sqrt(N) / 2 / sum(x$Sigma)
+Z
+```
+
+Alternatively, GST function could directly provide one/two-sided non-parametric global statistical test p-values.
+
+```{r}
+GST(data=dataset, m=n1, test.side = 2)
+```
+
+
+GST.simu
+```{r}
+m<- 50 # sample size in treatment group 1
+n<-  50 # sample size in treatment group 2
+k<- 20 # number of endpoints
+r<- rep(1, k)
+rho<- 0.01 # correlation
+simu<- 5
+
+i<-1
+dataset<- array(rnorm((m+n)*k*simu,0,1) , dim=c(m+n,k, simu))
+ for (j in 2:k) #introduce correlation for group 1
+ {dataset[1:m,j,]<- sqrt(rho)*dataset[1:m,1,]+sqrt(1-rho)*dataset[1:m,j,]
+ }
+dataset[(m+1):(m+n),1,]<- matrix(rnorm(n*simu,0,r[1]), nrow=n,ncol=simu)
+for (j in 2:k) #introduce correlation for group 2
+{ dataset[(m+1):(m+n),j,]<- sqrt(rho)*dataset[(m+1):(m+n),1,]+sqrt(1-rho)*
+                       matrix(rnorm(n*simu,0,r[j]), nrow=n,ncol=simu)
+}
+delta<- 0.15 # introduce difference between group 1 and group 2
+dataset[(m+1):(m+n),,]<- dataset[(m+1):(m+n),,]+delta
+dim(dataset) #[1] 100  20   5
+
+# GST from simulated data:
+x<- GST.simu(data=dataset,m)
+```
+

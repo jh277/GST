@@ -12,22 +12,23 @@ GST.parameter(data, n1)
 \item{n1}{number of observations in group 1}
 }
 \value{
-unbiased estimator of theta
+\code{theta.hat}: an unbiased estimator the treatment effect on individual outcomes
 
-estimated standard deviation of GTE
+\code{sigmaGTE}: an unbiased estimate of standard deviation of GTE
 
-estimated S1.n1n2
+\code{S1.n1n2}: estimated S1.n1n2
 
-estimated S2.n1n2
+\code{S1.n1n2}: estimated S2.n1n2
 
-estimated S3.n1n2
+\code{S1.n1n2}: estimated S3.n1n2
 
-unbiased estimator of theta sigma
+\code{Sigma}: unbiased estimate of standard deviation of treatment effect on individual outcomes
 
-estimated h1, adjusted rank-sum-type test
+\code{h1}: estimated h1, adjusted rank-sum-type test
 
-estimated h2, adjusted rank-sum-type test
+\code{h2}: estimated h2, adjusted rank-sum-type test
 }
 \description{
-This function calculate GST p.value and estimate GTE
+This function provides unbiased estimators of GST parameters for public sharing,
+which includes treatment effect on individual outcomes, standard deviation of GTE and etc.
 }

@@ -5,9 +5,9 @@
 #' @param data N-by-k matrix whose first n1 rows are observations from group 1
 #' @param m number of observations in group 1
 #'
-#' @return p value of the global statistical test
-#' @return global treatment effect of all outcomes
-#' @return p value under univariate assumption
+#' @return `p.GST`: p value of the global statistical test
+#' @return `GTE`: global treatment effect of all outcomes
+#' @return `p.univariate`: p value under univariate assumption
 #'
 #' @import stats
 #'

@@ -1,18 +1,19 @@
 #' GST.parameter function
 #'
-#' This function calculate GST p.value and estimate GTE
+#' This function provides unbiased estimators of GST parameters for public sharing,
+#' which includes treatment effect on individual outcomes, standard deviation of GTE and etc.
 #'
 #' @param data N-by-k matrix whose first n1 rows are observations from group 1
 #' @param n1 number of observations in group 1
 #'
-#' @return unbiased estimator of theta
-#' @return estimated standard deviation of GTE
-#' @return estimated S1.n1n2
-#' @return estimated S2.n1n2
-#' @return estimated S3.n1n2
-#' @return unbiased estimator of theta sigma
-#' @return estimated h1, adjusted rank-sum-type test
-#' @return estimated h2, adjusted rank-sum-type test
+#' @return `theta.hat`: an unbiased estimator the treatment effect on individual outcomes
+#' @return `sigmaGTE`: an unbiased estimate of standard deviation of GTE
+#' @return `S1.n1n2`: estimated S1.n1n2
+#' @return `S1.n1n2`: estimated S2.n1n2
+#' @return `S1.n1n2`: estimated S3.n1n2
+#' @return `Sigma`: unbiased estimate of standard deviation of treatment effect on individual outcomes
+#' @return `h1`: estimated h1, adjusted rank-sum-type test
+#' @return `h2`: estimated h2, adjusted rank-sum-type test
 #'
 #' @import stats
 #'

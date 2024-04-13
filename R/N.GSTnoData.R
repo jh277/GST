@@ -11,9 +11,9 @@
 #' @param power desired statistical power
 #' @param test.side 1(one-sided test) or 2 (two-sided test)
 #'
-#' @return sample size needed from treatment 1
-#' @return sample size needed from treatment 2
-#' @return total sample size
+#' @return `n1`: sample size needed from treatment 1
+#' @return `n2`: sample size needed from treatment 2
+#' @return `N`: total sample size
 #'
 #' @import stats
 #'

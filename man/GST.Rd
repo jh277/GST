@@ -7,22 +7,24 @@
 GST(data, m, test.side)
 }
 \arguments{
-\item{data}{a matrix of raw data. Rows are subjects}
+\item{data}{a matrix of raw data. Rows are subjects and columns are endpoints.
+All columns must be coded so that larger value is a better outcome.
+The first m rows in data are data from treatment 1, and the rest rows are data from treatment 2}
 
 \item{m}{number of subjects in treatment 1}
 
 \item{test.side}{1(one-sided test) or 2 (two-sided test)}
 }
 \value{
-p value of the global statistical test
+\code{p.value}: p value of the global statistical test
 
-adjusting factor to O'Brien's test
+\code{h}: adjusting factor to O'Brien's test
 
-a vector of treatment effect on individual outcomes
+\code{theta.hat}: a vector of treatment effect on individual outcomes
 
-global treatment effect of all outcomes
+\code{GTE}: global treatment effect of all outcomes
 
-standard deviation of GTE estimate
+\code{sigmaGTE}: standard deviation of GTE estimate
 }
 \description{
 This function calculates one or two-sided non-parametric global statistical test

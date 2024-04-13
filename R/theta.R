@@ -1,11 +1,11 @@
 #' theta function
 #'
-#' This function calculate theta (global treatment effect)
+#' This function calculates global treatment effect
 #'
 #' @param x1 observations from group 1
 #' @param x2 observations from group 2
 #'
-#' @return unbiased estimator of theta
+#' @return `theta1`: unbiased estimator of theta
 #'
 #' @import stats
 #'

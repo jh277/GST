@@ -4,8 +4,10 @@ Version: 0.0.0.9000
 Authors@R: 
      c(person("Peng", "Huang", email = "phuan12@jhmi.edu", role = "cre"),
        person("Jiaxin", "Huang", email = "jhuan206@jh.edu", role = "aut"))
-Description: Global statistics test (GST) can be applied in statistical design and data analysis 
-  when multiple primary outcomes are assess simultaneously to determine whether one treatment should be recommended for use.
+Description: Determining whether one treatment is preferred over others is a major goal of many clinical studies 
+  but can be complicated by the situation when no single outcome is sufficient to make the judgement. This package presents
+  a useful global statistics test (GST) technique and the corresponding global treatment effect (GTE) measure for 
+  assessing treatment's global preference when multiple outcomes are evaluated together. 
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

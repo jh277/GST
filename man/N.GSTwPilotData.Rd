@@ -7,7 +7,7 @@
 N.GSTwPilotData(pilot.data, m1, r0, test.side, alpha, power, GTE)
 }
 \arguments{
-\item{pilot.data}{a (m1+m2)xk matrix of pilot data with its}
+\item{pilot.data}{a (m1+m2) x k matrix of pilot data with its first m1 rows from treatment 1, and the rest m2 rows from treatment 2. k is the number of endpoints}
 
 \item{m1}{number of patients in treatment 1 in the pilot data}
 
@@ -22,11 +22,11 @@ N.GSTwPilotData(pilot.data, m1, r0, test.side, alpha, power, GTE)
 \item{GTE}{global treatment effect where power is controlled at.}
 }
 \value{
-sample size needed from treatment 1
+\code{n1}: sample size needed from treatment 1
 
-sample size needed from treatment 2
+\code{n2}: sample size needed from treatment 2
 
-unbiased estimate of GTE from the pilot data
+\code{theta.pilot}: unbiased estimate of GTE from the pilot data
 }
 \description{
 This function calculate sample size when some pilot data are available

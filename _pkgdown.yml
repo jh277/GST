@@ -1,0 +1,10 @@
+url: ~
+template:
+  bootstrap: 5
+  bootswatch: minty
+  bslib:
+    pkgdown-nav-height: 200px
+    base_font:
+      google: Montserrat
+home:
+  sidebar: FALSE

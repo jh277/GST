@@ -2,19 +2,17 @@
 #'
 #' This function calculates one or two-sided non-parametric global statistical test
 #'
-#' @param data a matrix of raw data. Rows are subjects
-#      and columns are endpoints. All columns must
-#      be coded so that larger value is a better outcome.
-#      The first m rows in data are data from treatment 1
-#      The rest rows are data from treatment 2
+#' @param data a matrix of raw data. Rows are subjects and columns are endpoints.
+#' All columns must be coded so that larger value is a better outcome.
+#' The first m rows in data are data from treatment 1, and the rest rows are data from treatment 2
 #' @param m number of subjects in treatment 1
 #' @param test.side 1(one-sided test) or 2 (two-sided test)
 #'
-#' @return p value of the global statistical test
-#' @return adjusting factor to O'Brien's test
-#' @return a vector of treatment effect on individual outcomes
-#' @return global treatment effect of all outcomes
-#' @return standard deviation of GTE estimate
+#' @return `p.value`: p value of the global statistical test
+#' @return `h`: adjusting factor to O'Brien's test
+#' @return `theta.hat`: a vector of treatment effect on individual outcomes
+#' @return `GTE`: global treatment effect of all outcomes
+#' @return `sigmaGTE`: standard deviation of GTE estimate
 #'
 #' @import stats
 #'

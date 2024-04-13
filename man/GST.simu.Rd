@@ -12,11 +12,11 @@ GST.simu(data, m)
 \item{m}{number of observations in group 1}
 }
 \value{
-p value of the global statistical test
+\code{p.GST}: p value of the global statistical test
 
-global treatment effect of all outcomes
+\code{GTE}: global treatment effect of all outcomes
 
-p value under univariate assumption
+\code{p.univariate}: p value under univariate assumption
 }
 \description{
 This function performs simulation using GST

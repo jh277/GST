@@ -2,9 +2,7 @@
 #'
 #' This function calculate sample size when some pilot data are available
 #'
-#' @param pilot.data a (m1+m2)xk matrix of pilot data with its
-#            first m1 rows from treatment 1, and the rest m2
-#            rows from treatment 2. k is the number of endpoints
+#' @param pilot.data a (m1+m2) x k matrix of pilot data with its first m1 rows from treatment 1, and the rest m2 rows from treatment 2. k is the number of endpoints
 #' @param m1 number of patients in treatment 1 in the pilot data
 #' @param r0 n2/n1, randomization ratio in new study
 #' @param test.side 1(one-sided test) or 2 (two-sided test)
@@ -15,9 +13,9 @@
 #       at the unbiased estimate of GTE (=mean of theta.pilot)
 #       from the pilot data.
 #'
-#' @return sample size needed from treatment 1
-#' @return sample size needed from treatment 2
-#' @return unbiased estimate of GTE from the pilot data
+#' @return `n1`: sample size needed from treatment 1
+#' @return `n2`: sample size needed from treatment 2
+#' @return `theta.pilot`: unbiased estimate of GTE from the pilot data
 #'
 #' @import stats
 #'

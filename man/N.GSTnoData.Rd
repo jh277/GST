@@ -24,11 +24,11 @@ N.GSTnoData(k, r0, theta, sigma2, rho, alpha, power, test.side)
 \item{test.side}{1(one-sided test) or 2 (two-sided test)}
 }
 \value{
-sample size needed from treatment 1
+\code{n1}: sample size needed from treatment 1
 
-sample size needed from treatment 2
+\code{n2}: sample size needed from treatment 2
 
-total sample size
+\code{N}: total sample size
 }
 \description{
 This function calculates sample size when no primary data is available

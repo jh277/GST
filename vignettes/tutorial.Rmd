@@ -304,3 +304,4 @@ dim(dataset) #[1] 100  20   5
 # GST from simulated data:
 x<- GST.simu(data=dataset,m)
 ```
+

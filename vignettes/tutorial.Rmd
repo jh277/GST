@@ -313,7 +313,7 @@ Z
 1-pnorm(Z) # mismatch?
 ```
 
-The p-value of the GST is obtained by comparing the value of Z to the critical values from the normal distribution. For example, Z=1.645 corresponds to p=0.05 for the one-sided test and p=0.10 for the two-sided test; Z=1.960 corresponds to p=0.025 for the one-sided test and p=0.05 for the two-sided test.
+The p-value of the GST is obtained by comparing the value of Z to the critical values from the normal distribution. For example, Z = 1.645 corresponds to p = 0.05 for the one-sided test and p = 0.10 for the two-sided test; Z = 1.960 corresponds to p = 0.025 for the one-sided test and p = 0.05 for the two-sided test.
 
 
 Alternatively, GST function could directly provide one/two-sided non-parametric global statistical test p-values.

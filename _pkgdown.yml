@@ -1,4 +1,4 @@
-url: ~
+url: https://jh277.github.io/GST/
 template:
   bootstrap: 5
   bootswatch: minty
@@ -7,4 +7,5 @@ template:
     base_font:
       google: Montserrat
 home:
-  sidebar: FALSE
+  sidebar: no
+

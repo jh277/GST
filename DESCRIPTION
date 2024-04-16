@@ -20,4 +20,4 @@ VignetteBuilder: knitr
 Imports: 
     magrittr,
     stats
-
+URL: https://jh277.github.io/GST/

@@ -12,7 +12,7 @@ theta(x1, x2)
 \item{x2}{observations from group 2}
 }
 \value{
-\code{theta1}: unbiased estimator of theta
+\code{theta1}: unbiased estimator of theta, which is the treatment effect on individual outcomes
 }
 \description{
 This function calculates global treatment effect

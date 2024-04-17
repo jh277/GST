@@ -3,6 +3,7 @@ title: "GST Tutorial"
 author:
   - name: Jiaxin Huang
 output: rmarkdown::html_vignette
+bibliography: references.bib  
 vignette: >
   %\VignetteIndexEntry{GST Tutorial}
   %\VignetteEncoding{UTF-8}
@@ -41,7 +42,7 @@ the treatment is better than the control and the probability that the
 control is better than the treatment. When there are multiple outcomes,
 compute such $\theta$ for each outcome and take an average
 $\bar{\theta}$ of these values.This $\bar{\theta}$ value is called the
-global treatment effect (GTE)
+global treatment effect (GTE).
 
 Interpretation of GTE is very straightforward: GTE = 0. indicates no
 global difference between treatment 1 and 2, GTE \> 0 indicates
@@ -60,13 +61,13 @@ the data are collected. Determination of global treatment effect,
 computation of sample size and testing of GTE using functions included
 in this package are illustrated in Part I, II and III respectively.
 
-### Part I. Determination of the global treatment effect
+## Part I. Determination of the global treatment effect
 
 This section describes how to compute the global treatment effect
 $\bar{\theta}$ from pilot data (if they are available) or summary
 statistics (if pilot data is not available).
 
-**When there are pilot data:**
+### Global treatment effect estimation when there are pilot data 
 
 When there are pilot data, we can directly use the theta function in
 this package. **Data has to been consistently coded to ensure that
@@ -98,7 +99,7 @@ Under this scenario, the global treatment effect $\bar{\theta}$ =
 0.3056, indicating that group 2 gives globally higher values than group
 1.
 
-**When there is no pilot data, or we only have summary statistics:**
+### Global treatment effect estimation when there is no pilot data
 
 When there are no pilot data, investigators can estimate the treatment
 effect based on information from the literature. In most cases, such
@@ -177,9 +178,9 @@ group 1 (control). For outcome 2, there is no global difference between
 group 1 and 2. For outcome 3, group 2 gives globally higher values than
 group 1.
 
-### Part II. Determination of sample size
+## Part II. Determination of sample size
 
-**Sample size estimation when some historical data are available**
+### Sample size estimation when some historical data are available
 
 We could use N.GSTwPilotData function to derive the sample size when
 there is some pilot data.
@@ -194,7 +195,7 @@ endpoints
 
 3\. r0: randomization ratio in new study = n2/n1
 
-4\. test.side: 1(one-sided test) or 2 (two-sided test)
+4\. test.side: 1 (one-sided test) or 2 (two-sided test)
 
 5\. alpha: type I error to be controlled
 
@@ -239,7 +240,7 @@ N.GSTwPilotData(data, m1=n1,
 As the result shows, we would need 66 participants in group 1 nd 100
 participants in group 2.
 
-**Sample size estimation when no historical data are available**
+### Sample size estimation when no historical data are available
 
 We could use N.GSTnoData function to derive the sample size when there
 is no pilot data.
@@ -287,7 +288,7 @@ rho<- 0.1
 N.GSTnoData(k, r0, GTE, sigma2, rho, alpha, beta, test.side)
 ```
 
-### Part III. Use of global statistical testing in data analysis
+## Part III. Use of global statistical testing in data analysis
 
 In previous sections, we've determined appropriate $\bar{\theta_a}$ for
 the target magnitude of treatment effect, set up the hypotheses,
@@ -322,8 +323,6 @@ Alternatively, GST function could directly provide one/two-sided non-parametric 
 GST(data=data, m=n1, test.side = 1)
 ```
 
-
-
 GST.simu
 
 ```{r}
@@ -351,3 +350,9 @@ dim(dataset) #[1] 100  20   5
 # GST from simulated data:
 x<- GST.simu(data=dataset,m)
 ```
+
+
+## References
+[@Huang2005]
+[@samplesize]
+[@GTE]

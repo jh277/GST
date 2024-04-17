@@ -13,7 +13,7 @@ The first m rows in data are data from treatment 1, and the rest rows are data f
 
 \item{m}{number of subjects in treatment 1}
 
-\item{test.side}{1(one-sided test) or 2 (two-sided test)}
+\item{test.side}{1 (one-sided test) or 2 (two-sided test)}
 }
 \value{
 \code{p.value}: p value of the global statistical test
@@ -27,5 +27,5 @@ The first m rows in data are data from treatment 1, and the rest rows are data f
 \code{sigmaGTE}: standard deviation of GTE estimate
 }
 \description{
-This function calculates one or two-sided non-parametric global statistical test
+This function performs one or two-sided non-parametric global statistical test
 }

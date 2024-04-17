@@ -1,12 +1,12 @@
 #' GST function
 #'
-#' This function calculates one or two-sided non-parametric global statistical test
+#' This function performs one or two-sided non-parametric global statistical test
 #'
 #' @param data a matrix of raw data. Rows are subjects and columns are endpoints.
-#' All columns must be coded so that larger value is a better outcome.
-#' The first m rows in data are data from treatment 1, and the rest rows are data from treatment 2
+#'  All columns must be coded so that larger value is a better outcome.
+#'  The first m rows in data are data from treatment 1, and the rest rows are data from treatment 2
 #' @param m number of subjects in treatment 1
-#' @param test.side 1(one-sided test) or 2 (two-sided test)
+#' @param test.side 1 (one-sided test) or 2 (two-sided test)
 #'
 #' @return `p.value`: p value of the global statistical test
 #' @return `h`: adjusting factor to O'Brien's test

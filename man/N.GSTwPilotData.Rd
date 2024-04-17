@@ -7,27 +7,36 @@
 N.GSTwPilotData(pilot.data, m1, r0, test.side, alpha, power, GTE)
 }
 \arguments{
-\item{pilot.data}{a (m1+m2) x k matrix of pilot data with its first m1 rows from treatment 1, and the rest m2 rows from treatment 2. k is the number of endpoints}
+\item{pilot.data}{a (m1+m2) x k matrix of pilot data with its first m1 rows
+from treatment 1, and the rest m2 rows from treatment 2. k is the number of endpoints}
 
 \item{m1}{number of patients in treatment 1 in the pilot data}
 
-\item{r0}{n2/n1, randomization ratio in new study}
+\item{r0}{n2/n1, randomization ratio in the study}
 
-\item{test.side}{1(one-sided test) or 2 (two-sided test)}
+\item{test.side}{1 (one-sided test) or 2 (two-sided test)}
 
 \item{alpha}{type I error to be controlled}
 
 \item{power}{statistical power to be controlled}
 
-\item{GTE}{global treatment effect where power is controlled at.}
+\item{GTE}{global treatment effect where power is controlled at.
+If GTE=NA (missing), the power will be controlled at the unbiased estimate
+of GTE (=mean of theta.pilot) from the pilot data.}
 }
 \value{
-\code{n1}: sample size needed from treatment 1
+\code{n1}: sample size needed in treatment 1
 
-\code{n2}: sample size needed from treatment 2
+\code{n2}: sample size needed in treatment 2
 
 \code{theta.pilot}: unbiased estimate of GTE from the pilot data
 }
 \description{
-This function calculate sample size when some pilot data are available
+This function calculates sample size when some pilot data are available.
+}
+\details{
+It returns the sample size needed in each treatment group based on
+target treatment effect size, significance level, desired power for a specified
+alternative treatment effect size, correlation among multiple outcomes, and finally,
+the randomization ratio.
 }

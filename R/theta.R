@@ -5,7 +5,7 @@
 #' @param x1 observations from group 1
 #' @param x2 observations from group 2
 #'
-#' @return `theta1`: unbiased estimator of theta
+#' @return `theta1`: unbiased estimator of theta, which is the treatment effect on individual outcomes
 #'
 #' @import stats
 #'

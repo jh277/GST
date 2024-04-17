@@ -31,5 +31,10 @@ N.GSTnoData(k, r0, theta, sigma2, rho, alpha, power, test.side)
 \code{N}: total sample size
 }
 \description{
-This function calculates sample size when no primary data is available
+This function calculates sample size needed in each group when there is no pilot data
+}
+\details{
+This function calculates sample size based on information from literature.
+In most cases, such information is presented in terms of mean and standard
+deviation using normal approximation.
 }

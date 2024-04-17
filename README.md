@@ -25,3 +25,7 @@ The package contains 6 functions:
 
 3. run "library(GST)" in your console to make it available in your current R session.
 
+
+**URL**
+
+Tutorial of the package is available [here](https://jh277.github.io/GST/)

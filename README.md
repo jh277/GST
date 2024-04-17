@@ -9,12 +9,12 @@ This package presents a useful global statistics test (GST) technique and the co
 
 The package contains 6 functions:
 
-*\. GST.parameter() provides unbiased estimators of GST parameters for public sharing.
-*\.  GST() performs one or two-sided non-parametric global statistical test.
-*\.  theta() calculates global treatment effect.
-*\.  N.GSTwPilotData() calculates sample size needed in each group when there is no pilot data.
-*\.  N.GSTnoData() calculates sample size when some pilot data are available.
-*\.  GST.simu() performs simulation using GST
+* GST.parameter() provides unbiased estimators of GST parameters for public sharing.
+* GST() performs one or two-sided non-parametric global statistical test.
+* theta() calculates global treatment effect.
+* N.GSTwPilotData() calculates sample size needed in each group when there is no pilot data.
+* N.GSTnoData() calculates sample size when some pilot data are available.
+* GST.simu() performs simulation using GST
 
 
 **Installation and use**:

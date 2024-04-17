@@ -2,7 +2,7 @@ Package: GST
 Title: This package includes a global statistics test which combine multiple primary outcomes in clinical trials
 Version: 0.0.0.9000
 Authors@R: 
-     c(person("Peng", "Huang", email = "phuan12@jhmi.edu", role = "cre"),
+     c(person("Peng", "Huang", email = "phuang12@jhmi.edu", role = "cre"),
        person("Jiaxin", "Huang", email = "jhuan206@jh.edu", role = "aut"))
 Description: Determining whether one treatment is preferred over others is a major goal of many clinical studies 
   but can be complicated by the situation when no single outcome is sufficient to make the judgement. This package presents

@@ -73,9 +73,17 @@ Huang</h4>
 
     
     
+<div class="section level2">
+<h2 id="download-gst-package">Download GST package<a class="anchor" aria-label="anchor" href="#download-gst-package"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="co"># library(devtools)</span></span>
+<span><span class="co"># devtools::install_github("jh277/GST")</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jh277.github.io/GST/">GST</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yihui.org/knitr/" class="external-link">knitr</a></span><span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level2">
 <h2 id="introduction-to-the-use-of-global-statistical-approach">Introduction to the use of Global Statistical Approach<a class="anchor" aria-label="anchor" href="#introduction-to-the-use-of-global-statistical-approach"></a>
 </h2>
@@ -93,7 +101,7 @@ and the probability that the control is better than the treatment. When
 there are multiple outcomes, compute such <span class="math inline">\(\theta\)</span> for each outcome and take an
 average <span class="math inline">\(\bar{\theta}\)</span> of these
 values.This <span class="math inline">\(\bar{\theta}\)</span> value is
-called the global treatment effect (GTE)</p>
+called the global treatment effect (GTE).</p>
 <p>Interpretation of GTE is very straightforward: GTE = 0. indicates no
 global difference between treatment 1 and 2, GTE &gt; 0 indicates
 treatment 2 gives globally higher values than treatment 1 and GTE &lt; 0
@@ -110,14 +118,17 @@ global effect using O’Brien’s GST after the data are collected.
 Determination of global treatment effect, computation of sample size and
 testing of GTE using functions included in this package are illustrated
 in Part I, II and III respectively.</p>
-<div class="section level3">
-<h3 id="part-i--determination-of-the-global-treatment-effect">Part I. Determination of the global treatment effect<a class="anchor" aria-label="anchor" href="#part-i--determination-of-the-global-treatment-effect"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="part-i--determination-of-the-global-treatment-effect">Part I. Determination of the global treatment effect<a class="anchor" aria-label="anchor" href="#part-i--determination-of-the-global-treatment-effect"></a>
+</h2>
 <p>This section describes how to compute the global treatment effect
 <span class="math inline">\(\bar{\theta}\)</span> from pilot data (if
 they are available) or summary statistics (if pilot data is not
 available).</p>
-<p><strong>When there are pilot data:</strong></p>
+<div class="section level3">
+<h3 id="global-treatment-effect-estimation-when-there-are-pilot-data">Global treatment effect estimation when there are pilot data<a class="anchor" aria-label="anchor" href="#global-treatment-effect-estimation-when-there-are-pilot-data"></a>
+</h3>
 <p>When there are pilot data, we can directly use the theta function in
 this package. <strong>Data has to been consistently coded to ensure that
 larger values indicate better outcomes for all measures.</strong></p>
@@ -130,7 +141,7 @@ V1, V2, …, and VK. The Entries are Observations from Patients</div>
 freedom, while x2 is 100 random samples from a t-distribution with 2
 degrees of freedom. We treat x1 as outcomes from group 1 and x2 as
 outcomes from group 2 in pilot data. The <span class="math inline">\(\bar{\theta}\)</span> is calculated as follow:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span><span class="va">x1</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html" class="external-link">rt</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">50</span>, ncp <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">x2</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html" class="external-link">rt</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">2</span>, ncp <span class="op">=</span> <span class="fl">10.3</span><span class="op">)</span></span>
@@ -142,8 +153,10 @@ outcomes from group 2 in pilot data. The <span class="math inline">\(\bar{\theta
 <span><span class="va">effect_size1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x1</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">x1</span>,<span class="va">x2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Under this scenario, the global treatment effect <span class="math inline">\(\bar{\theta}\)</span> = 0.3056, indicating that
 group 2 gives globally higher values than group 1.</p>
-<p><strong>When there is no pilot data, or we only have summary
-statistics:</strong></p>
+</div>
+<div class="section level3">
+<h3 id="global-treatment-effect-estimation-when-there-is-no-pilot-data">Global treatment effect estimation when there is no pilot data<a class="anchor" aria-label="anchor" href="#global-treatment-effect-estimation-when-there-is-no-pilot-data"></a>
+</h3>
 <p>When there are no pilot data, investigators can estimate the
 treatment effect based on information from the literature. In most
 cases, such information is presented in terms of mean and standard
@@ -157,7 +170,7 @@ not a problem when GTE is used to measure a treatment’s effect since the
 GTE is unchanged as it is computed only from the observation ranks.</p>
 <p>Here is a brief illustration of the GTE’s invariance property to
 nonlinear monotone transformation:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># take log-transformation of the data:</span></span>
 <span><span class="va">y1</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">x1</span><span class="op">)</span></span>
 <span><span class="va">y2</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span>
@@ -188,7 +201,7 @@ monotone transformation while the effect size varies significantly.</p>
 <p>Example:</p>
 <p>Suppose we have hypothetical summary statistics using normal
 approximation as shown below.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mu1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">40</span>, <span class="fl">50</span><span class="op">)</span></span>
 <span><span class="va">stdev1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">mu2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">70</span><span class="op">)</span></span>
@@ -244,7 +257,10 @@ approximation as shown below.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p>We can calculate the treatment effect <span class="math inline">\(\theta\)</span> of individual outcomes based on
+<span class="math inline">\(\theta = 2\Phi\left(\frac{\mu_1 -
+\mu_2}{\sqrt{\sigma_1^2 + \sigma_2^2}}\right) - 1\)</span> <span class="citation">(Huang, Woolson, and Granholm 2009)</span></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="op">(</span><span class="va">mu2</span><span class="op">-</span><span class="va">mu1</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">stdev1</span><span class="op">^</span><span class="fl">2</span><span class="op">+</span><span class="va">stdev2</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span></span>
 <span><span class="va">theta</span></span>
 <span><span class="co">#&gt; [1] -0.9993964  0.0000000  0.9799255</span></span></code></pre></div>
@@ -253,11 +269,13 @@ group 1 (control). For outcome 2, there is no global difference between
 group 1 and 2. For outcome 3, group 2 gives globally higher values than
 group 1.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="part-ii--determination-of-sample-size">Part II. Determination of sample size<a class="anchor" aria-label="anchor" href="#part-ii--determination-of-sample-size"></a>
+</h2>
 <div class="section level3">
-<h3 id="part-ii--determination-of-sample-size">Part II. Determination of sample size<a class="anchor" aria-label="anchor" href="#part-ii--determination-of-sample-size"></a>
+<h3 id="sample-size-estimation-when-some-historical-data-are-available">Sample size estimation when some historical data are available<a class="anchor" aria-label="anchor" href="#sample-size-estimation-when-some-historical-data-are-available"></a>
 </h3>
-<p><strong>Sample size estimation when some historical data are
-available</strong></p>
 <p>We could use N.GSTwPilotData function to derive the sample size when
 there is some pilot data.</p>
 <p>Functions required inputs are:</p>
@@ -266,11 +284,11 @@ from treatment 1, and the rest m2 rows from treatment 2. k is the number
 of endpoints</p>
 <p>2. m1: number of patients in treatment 1 in the pilot data</p>
 <p>3. r0: randomization ratio in new study = n2/n1</p>
-<p>4. test.side: 1(one-sided test) or 2 (two-sided test)</p>
+<p>4. test.side: 1 (one-sided test) or 2 (two-sided test)</p>
 <p>5. alpha: type I error to be controlled</p>
 <p>6. power: statistical power to be controlled</p>
 <p>7. GTE: global treatment effect where power is controlled at.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># hypothetical pilot data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span><span class="va">k</span><span class="op">&lt;-</span> <span class="fl">3</span></span>
@@ -301,7 +319,7 @@ from treatment 2 which follow normal distribution with mean 0.6.</p>
 <p>Now, suppose the goal is to attain 0.05 significance level with 90%
 power in two sided hypothesis testing. We pass these requirements into
 the function:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># calculate sample size</span></span>
 <span><span class="fu"><a href="../reference/N.GSTwPilotData.html">N.GSTwPilotData</a></span><span class="op">(</span><span class="va">data</span>, m1<span class="op">=</span><span class="va">n1</span>, </span>
 <span>  r0<span class="op">=</span><span class="va">n2</span><span class="op">/</span><span class="va">n1</span>, test.side<span class="op">=</span><span class="fl">2</span>, alpha<span class="op">=</span><span class="fl">0.05</span>, power<span class="op">=</span><span class="fl">0.9</span>, GTE<span class="op">=</span><span class="cn">NA</span><span class="op">)</span></span>
@@ -318,8 +336,10 @@ the function:</p>
 <span><span class="co">#&gt; [1] 0.2541667 0.3083333 0.1316667</span></span></code></pre></div>
 <p>As the result shows, we would need 66 participants in group 1 nd 100
 participants in group 2.</p>
-<p><strong>Sample size estimation when no historical data are
-available</strong></p>
+</div>
+<div class="section level3">
+<h3 id="sample-size-estimation-when-no-historical-data-are-available">Sample size estimation when no historical data are available<a class="anchor" aria-label="anchor" href="#sample-size-estimation-when-no-historical-data-are-available"></a>
+</h3>
 <p>We could use N.GSTnoData function to derive the sample size when
 there is no pilot data.</p>
 <p>Functions required inputs are:</p>
@@ -333,9 +353,9 @@ there is no pilot data.</p>
 <p>8. test.side: 1(one-sided test) or 2 (two-sided test)</p>
 <p>Using the same hypothetical summary statistics using normal
 approximation before:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">summary_data</span>, </span>
-<span>      col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Outcome scale"</span>, <span class="st">"Placebo Mean"</span>, <span class="st">"Placebo SD"</span>, <span class="st">"Treatment Mean"</span>, <span class="st">"Treatment SD"</span><span class="op">)</span>, </span>
+<span>      col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Outcome scale"</span>, <span class="st">"Placebo Mean"</span>, <span class="st">"Placebo SD"</span>, <span class="st">"Treatment Mean"</span>, <span class="st">"Treatment SD"</span><span class="op">)</span>,</span>
 <span>      align <span class="op">=</span> <span class="st">'c'</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -376,9 +396,13 @@ approximation before:</p>
 </tr>
 </tbody>
 </table>
-<p>We can calculate GTE and sigma2, then plug them into the function to
-get sample size estimation.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<p>In previous section, we obtained the treatment effect <span class="math inline">\(\theta\)</span> for each outcome, we can then
+calculate the global treatment effect by taking the average <span class="math inline">\(\bar{\theta}\)</span> of these <span class="math inline">\(\theta\)</span> values.</p>
+<p>We can also derive an estimation of the standard deviation <span class="math inline">\(\sigma^2 = \min\left\{\frac{1}{12}, \frac{1 -
+\min_{1 \leq v \leq K} (\theta_va^2)}{4}\right\}\)</span>. <span class="citation">(Huang, Woolson, and O’Brien 2008)</span></p>
+<p>Plug these values into the function, we can get sample size
+estimation for each group.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">GTE</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">theta</span><span class="op">)</span></span>
 <span><span class="va">sigma2</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">theta</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fl">4</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">12</span><span class="op">)</span> </span>
 <span><span class="co"># rest of the variables are pre-determined:</span></span>
@@ -400,9 +424,10 @@ get sample size estimation.</p>
 <span><span class="co">#&gt; $N</span></span>
 <span><span class="co">#&gt; [1] 5827</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="part-iii--use-of-global-statistical-testing-in-data-analysis">Part III. Use of global statistical testing in data analysis<a class="anchor" aria-label="anchor" href="#part-iii--use-of-global-statistical-testing-in-data-analysis"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="part-iii--use-of-global-statistical-testing-in-data-analysis">Part III. Use of global statistical testing in data analysis<a class="anchor" aria-label="anchor" href="#part-iii--use-of-global-statistical-testing-in-data-analysis"></a>
+</h2>
 <p>In previous sections, we’ve determined appropriate <span class="math inline">\(\bar{\theta_a}\)</span> for the target magnitude
 of treatment effect, set up the hypotheses, computed the sample size
 needed, and now, we can test the treatment’s global effect by
@@ -412,7 +437,7 @@ critical values from normal distribution.</p>
 <p>The example dataset is the same hypothetical historical data from
 previous section with 3 endpoints, first 40 rows contain observations in
 group 1 and rest 60 rows contain observations in group 2.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             [,1]       [,2]       [,3]</span></span>
 <span><span class="co">#&gt; [1,] -0.89864943  1.1584776 -0.9020687</span></span>
@@ -424,7 +449,7 @@ group 1 and rest 60 rows contain observations in group 2.</p>
 <p>We can use GST.parameter function to calculate some useful parameters
 like treatment effect on individual outcomes, standard deviation of
 global treatment effect and etc.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get p-value from GST:</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GST.parameter.html">GST.parameter</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">n1</span><span class="op">)</span></span>
 <span><span class="va">Z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">theta</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">Sigma</span><span class="op">)</span></span>
@@ -433,13 +458,13 @@ global treatment effect and etc.</p>
 <span><span class="fl">1</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span> <span class="co"># mismatch?</span></span>
 <span><span class="co">#&gt; [1] 0.03382247</span></span></code></pre></div>
 <p>The p-value of the GST is obtained by comparing the value of Z to the
-critical values from the normal distribution. For example, Z=1.645
-corresponds to p=0.05 for the one-sided test and p=0.10 for the
-two-sided test; Z=1.960 corresponds to p=0.025 for the one-sided test
-and p=0.05 for the two-sided test.</p>
+critical values from the normal distribution. For example, Z = 1.645
+corresponds to p = 0.05 for the one-sided test and p = 0.10 for the
+two-sided test; Z = 1.960 corresponds to p = 0.025 for the one-sided
+test and p = 0.05 for the two-sided test.</p>
 <p>Alternatively, GST function could directly provide one/two-sided
 non-parametric global statistical test p-values.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/GST.html">GST</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span>, m<span class="op">=</span><span class="va">n1</span>, test.side <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $p.value</span></span>
 <span><span class="co">#&gt; [1] 0.004514176</span></span>
@@ -456,7 +481,7 @@ non-parametric global statistical test p-values.</p>
 <span><span class="co">#&gt; $sigmaGTE</span></span>
 <span><span class="co">#&gt; [1] 0.09187831</span></span></code></pre></div>
 <p>GST.simu</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span><span class="op">&lt;-</span> <span class="fl">50</span> <span class="co"># sample size in treatment group 1</span></span>
 <span><span class="va">n</span><span class="op">&lt;-</span>  <span class="fl">50</span> <span class="co"># sample size in treatment group 2</span></span>
 <span><span class="va">k</span><span class="op">&lt;-</span> <span class="fl">20</span> <span class="co"># number of endpoints</span></span>
@@ -481,6 +506,29 @@ non-parametric global statistical test p-values.</p>
 <span></span>
 <span><span class="co"># GST from simulated data:</span></span>
 <span><span class="va">x</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/GST.simu.html">GST.simu</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">dataset</span>,<span class="va">m</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<p><span class="citation">(Huang et al. 2005)</span></p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Huang2005" class="csl-entry">
+Huang, Peng, Barbara C. Tilley, Robert F. Woolson, and Stuart Lipsitz.
+2005. <span>“Adjusting o’brien’s Test to Control Type i Error for the
+Generalized Nonparametric Behrens–Fisher Problem.”</span>
+<em>Biometrics</em> 61 (2): 532–39. <a href="https://doi.org/10.1111/j.1541-0420.2005.00322.x" class="external-link">https://doi.org/10.1111/j.1541-0420.2005.00322.x</a>.
+</div>
+<div id="ref-GTE" class="csl-entry">
+Huang, Peng, Robert F Woolson, and A Granholm. 2009. <span>“The Use of a
+Global Statistical Approach for the Design and Data Analysis of Clinical
+Trials with Multiple Primary Outcomes.”</span> <em>Exp Stroke</em> 1:
+100–109.
+</div>
+<div id="ref-samplesize" class="csl-entry">
+Huang, Peng, Robert F. Woolson, and Peter C. O’Brien. 2008. <span>“A
+Rank‐based Sample Size Method for Multiple Outcomes in Clinical
+Trials.”</span> <em>Statistics in Medicine</em> 27 (16): 3084–104. <a href="https://doi.org/10.1002/sim.3182" class="external-link">https://doi.org/10.1002/sim.3182</a>.
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

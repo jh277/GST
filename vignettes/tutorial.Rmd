@@ -20,14 +20,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Download GST package
-```{r}
-# install.packages("devtools")
-# library(devtools)
-# devtools::install_github("jh277/GST")
-```
-
-
 ```{r setup}
 library(GST)
 library(knitr)

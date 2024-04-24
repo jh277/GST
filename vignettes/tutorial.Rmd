@@ -83,8 +83,8 @@ this package to get an estimation of global treatment effect.
 
 Suppose $X1$ holds observations from group 1 and $X2$ holds observations
 from group 2, in which data are consistently coded. Then you can
-directly pass $X1$ and $X2$ into theta function in form of **theta(X1,
-X2)**. This function will then calculates the estimated treatment effect
+directly pass $X1$ and $X2$ into theta function in form of theta(X1,
+X2). This function will then calculates the estimated treatment effect
 for this outcome.
 
 Example:
@@ -132,14 +132,17 @@ nonlinear monotone transformation:
 # take log-transformation of the data:
 y1<- log(x1)
 y2<- log(x2)
+# take square transformation of the data:
+z1<- x1^3
+z2<- x2^3
+```
+
+```{r echo=FALSE}
 # theta:
 theta_2 <- theta(y1,y2)
 # effect size when comparing y1 and y2:
 effect_size2 <- abs(mean(y1)-mean(y2))/sqrt(var(c(y1,y2)))
 
-# take square transformation of the data:
-z1<- x1^3
-z2<- x2^3
 # theta:
 theta_3 <- theta(z1,z2) 
 # effect size when comparing z1 and z2:
@@ -194,7 +197,7 @@ group 1 (control). For outcome 2, there is no global difference between
 group 1 and 2. For outcome 3, group 2 gives globally higher values than
 group 1.
 
-** summary statistics in form of other distribution
+\*\* summary statistics in form of other distribution
 
 ## Part II. Determination of sample size
 
@@ -285,7 +288,7 @@ Using the same hypothetical summary statistics using normal
 approximation before:
 
 ```{r echo=FALSE}
-ex_sumary
+ex_summary
 ```
 
 In previous section, we obtained the treatment effect $\theta$ for each
@@ -312,16 +315,15 @@ rho<- 0.1
 N.GSTnoData(k, r0, GTE, sigma2, rho, alpha, beta, test.side)
 ```
 
-
 ### Compare to univariate analysis
 
-One advantages of using GTE is that it helps investigators obtain the desired
-power and significance level with smaller sample size compared to univariate
-analysis. 
+One advantages of using GTE is that it helps investigators obtain the
+desired power and significance level with smaller sample size compared
+to univariate analysis.
 
-Here, we estimate the sample sizes needed in each arm of the group based on univariate
-analysis to obtain 90% power and 0.05 significance level using the same 
-hypothetical summary data.
+Here, we estimate the sample sizes needed in each arm of the group based
+on univariate analysis to obtain 90% power and 0.05 significance level
+using the same hypothetical summary data.
 
 ```{r}
 N.Bon <- rep(NA, k)
@@ -334,11 +336,12 @@ for (i in 1:k){
 N.Bon
 ```
 
-We would need 1884 participants in each arm in outcome 1, 210 participants in 
-each arm in outcome 2, and 53 participants in each arm in outcome 3. 
+We would need 1884 participants in each arm in outcome 1, 210
+participants in each arm in outcome 2, and 53 participants in each arm
+in outcome 3.
 
-As the result shows, sample sizes based on univariate analysis
-are much greater compared to sample size estimation based on GTE.
+As the result shows, sample sizes based on univariate analysis are much
+greater compared to sample size estimation based on GTE.
 
 ## Part III. Use of global statistical testing in data analysis
 

@@ -23,6 +23,7 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(GST)
 library(knitr)
+library(pwr)
 ```
 
 ## Introduction to the use of Global Statistical Approach
@@ -38,28 +39,36 @@ evaluated together.
 
 Measure of treatment benefit for each outcome is defined as
 $\theta = p - q$ which is the difference between the probability that
-the treatment is better than the control and the probability that the
-control is better than the treatment. When there are multiple outcomes,
-compute such $\theta$ for each outcome and take an average
+the treatment is better than the control (p) and the probability that
+the control is better than the treatment (q). When there are multiple
+outcomes, compute such $\theta$ for each outcome and take an average
 $\bar{\theta}$ of these values.This $\bar{\theta}$ value is called the
 global treatment effect (GTE).
 
 Interpretation of GTE is very straightforward: GTE = 0. indicates no
 global difference between treatment 1 and 2, GTE \> 0 indicates
 treatment 2 gives globally higher values than treatment 1 and GTE \< 0
-indicates treamtent 2 gives globally smaller values than treatment 1.
-GTE values approaching 1 implies an increased treatment 2's global
-values over treatment 1, whereas GTE values approaching -1 suggest a
-decreased treatment 2's global values over treatment 1.
+indicates treamtent 2 gives globally smaller values than treatment 1. In
+continuous case, GTE values approaching 1 implies an increased treatment
+2's global values over treatment 1, whereas GTE values approaching -1
+suggest a decreased treatment 2's global values over treatment 1.
 
-O'Brien's rank-sum type GST is a simple useful method to compare a
-treatment's global effect on multiple outcomes. Once an appropriate
-$\bar{\theta}_a$ value for the target magnitude of treatment effect is
-determined, one is ready to set up hypotheses, compute the sample size
-needed, and test the treatment global effect using O'Brien's GST after
-the data are collected. Determination of global treatment effect,
-computation of sample size and testing of GTE using functions included
-in this package are illustrated in Part I, II and III respectively.
+This package provides a simple useful method to compare a treatment's
+global effect on multiple outcomes. Once an appropriate $\bar{\theta}_a$
+value for the target magnitude of treatment effect is determined, one is
+ready to set up hypotheses, compute the sample size needed, and test the
+treatment global effect using O'Brien's GST after the data are
+collected. Determination of global treatment effect, computation of
+sample size and testing of GTE using functions included in this package
+are illustrated in Part I, II and III respectively.
+
+## Data preparation.
+
+Data has to been consistently coded to ensure that larger values
+indicate better outcomes for all measures.
+
+![Data Structure: The K Outcomes are Denoted by V1, V2, ..., and VK. The
+Entries are Observations from Patients](images/data.png)
 
 ## Part I. Determination of the global treatment effect
 
@@ -70,11 +79,13 @@ statistics (if pilot data is not available).
 ### Global treatment effect estimation when there are pilot data
 
 When there are pilot data, we can directly use the theta function in
-this package. **Data has to been consistently coded to ensure that
-larger values indicate better outcomes for all measures.**
+this package to get an estimation of global treatment effect.
 
-![Data Structure: The K Outcomes are Denoted by V1, V2, ..., and VK. The
-Entries are Observations from Patients](images/data.png)
+Suppose $X1$ holds observations from group 1 and $X2$ holds observations
+from group 2, in which data are consistently coded. Then you can
+directly pass $X1$ and $X2$ into theta function in form of **theta(X1,
+X2)**. This function will then calculates the estimated treatment effect
+for this outcome.
 
 Example:
 
@@ -149,11 +160,11 @@ Example:
 Suppose we have hypothetical summary statistics using normal
 approximation as shown below.
 
-```{r}
-mu1 = c(30, 40, 50)
-stdev1 = c(3, 4, 5)
-mu2 = c(10, 40, 70)
-stdev2 = c(5, 6, 7)
+```{r echo=FALSE}
+mu1 <- c(190,80,50) # mean from treatment 1
+stdev1 <- c(90,30,30) # standard deviation from treatment 1
+mu2 <- c(200,70,30) # mean from treatment 2
+stdev2 <- c(80,30,30)
 
 summary_data <- data.frame(
   Outcome_Scale = c("Outcome 1", "Outcome 2", "Outcome 3"),
@@ -162,13 +173,16 @@ summary_data <- data.frame(
   Treatment_Mean = mu2,
   Treatment_SD = stdev2
 )
-
-kable(summary_data, 
+ex_summary <- kable(summary_data, 
       col.names = c("Outcome scale", "Placebo Mean", "Placebo SD", "Treatment Mean", "Treatment SD"), 
       align = 'c')
+ex_summary
 ```
 
-We can calculate the treatment effect $\theta$ of individual outcomes based on $\theta = 2\Phi\left(\frac{\mu_1 - \mu_2}{\sqrt{\sigma_1^2 + \sigma_2^2}}\right) - 1$ [@GTE]
+We can calculate the treatment effect $\theta$ of individual outcomes
+based on
+$\theta = 2\Phi\left(\frac{\mu_1 - \mu_2}{\sqrt{\sigma_1^2 + \sigma_2^2}}\right) - 1$
+[@GTE]
 
 ```{r}
 theta <- 2*pnorm((mu2-mu1)/sqrt(stdev1^2+stdev2^2))-1
@@ -179,6 +193,8 @@ For outcome 1, group 2(treatment) gives globally smaller values than
 group 1 (control). For outcome 2, there is no global difference between
 group 1 and 2. For outcome 3, group 2 gives globally higher values than
 group 1.
+
+** summary statistics in form of other distribution
 
 ## Part II. Determination of sample size
 
@@ -205,7 +221,7 @@ endpoints
 
 7\. GTE: global treatment effect where power is controlled at.
 
-```{r}
+```{r echo=FALSE}
 # hypothetical pilot data
 set.seed(123)
 k<- 3
@@ -239,7 +255,7 @@ N.GSTwPilotData(data, m1=n1,
   r0=n2/n1, test.side=2, alpha=0.05, power=0.9, GTE=NA)
 ```
 
-As the result shows, we would need 66 participants in group 1 nd 100
+As the result shows, we would need 66 participants in group 1 and 100
 participants in group 2.
 
 ### Sample size estimation when no historical data are available
@@ -268,17 +284,20 @@ Functions required inputs are:
 Using the same hypothetical summary statistics using normal
 approximation before:
 
-```{r}
-kable(summary_data, 
-      col.names = c("Outcome scale", "Placebo Mean", "Placebo SD", "Treatment Mean", "Treatment SD"),
-      align = 'c')
+```{r echo=FALSE}
+ex_sumary
 ```
 
-In previous section, we obtained the treatment effect $\theta$ for each outcome, we can then calculate the global treatment effect by taking the average $\bar{\theta}$ of these $\theta$ values.
+In previous section, we obtained the treatment effect $\theta$ for each
+outcome, we can then calculate the global treatment effect by taking the
+average $\bar{\theta}$ of these $\theta$ values.
 
-We can also derive an estimation of the standard deviation $\sigma^2 = \min\left\{\frac{1}{12}, \frac{1 - \min_{1 \leq v \leq K} (\theta_va^2)}{4}\right\}$. [@samplesize]
+We can also derive an estimation of the standard deviation
+$\sigma^2 = \min\left\{\frac{1}{12}, \frac{1 - \min_{1 \leq v \leq K} (\theta_va^2)}{4}\right\}$.
+[@samplesize]
 
-Plug these values into the function, we can get sample size estimation for each group.
+Plug these values into the function, we can get sample size estimation
+for each group.
 
 ```{r}
 GTE<- mean(theta)
@@ -287,11 +306,39 @@ sigma2<- min((1-min(theta^2))/4, 1/12)
 k<- length(mu1) # number of endpoints
 alpha<- 0.05 # type I error
 beta<- 0.1 # 90% power
-test.side<- 2
+test.side<- 1
 r0<- 1 # randomization ratio
 rho<- 0.1
 N.GSTnoData(k, r0, GTE, sigma2, rho, alpha, beta, test.side)
 ```
+
+
+### Compare to univariate analysis
+
+One advantages of using GTE is that it helps investigators obtain the desired
+power and significance level with smaller sample size compared to univariate
+analysis. 
+
+Here, we estimate the sample sizes needed in each arm of the group based on univariate
+analysis to obtain 90% power and 0.05 significance level using the same 
+hypothetical summary data.
+
+```{r}
+N.Bon <- rep(NA, k)
+for (i in 1:k){
+  d1<- abs(mu1[i]-mu2[i])/ max(stdev1[i],stdev2[i])
+  x1<- pwr.t.test(n = NULL, d = d1, power=0.9, sig.level=0.05/3,
+                  type="two.sample", alternative="greater")
+  N.Bon[i]<- round(x1$n)
+}
+N.Bon
+```
+
+We would need 1884 participants in each arm in outcome 1, 210 participants in 
+each arm in outcome 2, and 53 participants in each arm in outcome 3. 
+
+As the result shows, sample sizes based on univariate analysis
+are much greater compared to sample size estimation based on GTE.
 
 ## Part III. Use of global statistical testing in data analysis
 

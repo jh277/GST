@@ -62,7 +62,7 @@ collected. Determination of global treatment effect, computation of
 sample size and testing of GTE using functions included in this package
 are illustrated in Part I, II and III respectively.
 
-## Data preparation.
+## Data preparation
 
 Data has to been consistently coded to ensure that larger values
 indicate better outcomes for all measures.
@@ -124,39 +124,6 @@ data to obtain a better parametric approximation, and only summary
 statistics of the transformed data were reported. Fortunately, this is
 not a problem when GTE is used to measure a treatment's effect since the
 GTE is unchanged as it is computed only from the observation ranks.
-
-Here is a brief illustration of the GTE's invariance property to
-nonlinear monotone transformation:
-
-```{r}
-# take log-transformation of the data:
-y1<- log(x1)
-y2<- log(x2)
-# take square transformation of the data:
-z1<- x1^3
-z2<- x2^3
-```
-
-```{r echo=FALSE}
-# theta:
-theta_2 <- theta(y1,y2)
-# effect size when comparing y1 and y2:
-effect_size2 <- abs(mean(y1)-mean(y2))/sqrt(var(c(y1,y2)))
-
-# theta:
-theta_3 <- theta(z1,z2) 
-# effect size when comparing z1 and z2:
-effect_size3 <- abs(mean(z1)-mean(z2))/sqrt(var(c(z1,z2))) 
-compare <- as.data.frame(matrix(c(theta_1, theta_2, theta_3, 
-                                effect_size1, effect_size2, effect_size3),
-                                nrow = 3, ncol = 2))
-colnames(compare) <- c("GTE", "Effect size")
-rownames(compare) <- c("Normal", "Log-transformed", "square_transformed")
-compare
-```
-
-As the table shows, the GTE do not change after applying nonlinear
-monotone transformation while the effect size varies significantly.
 
 Example:
 
@@ -224,6 +191,13 @@ endpoints
 
 7\. GTE: global treatment effect where power is controlled at.
 
+
+Example: Suppose there are 3 endpoints in this hypothetical historical dataset. 
+The first 40 rows are random observations from treatment 1 which follow standard
+normal distribution. The rest 60 rows are random observations from
+treatment 2 which follow normal distribution with mean 0.6.
+
+
 ```{r echo=FALSE}
 # hypothetical pilot data
 set.seed(123)
@@ -242,11 +216,6 @@ data2<- cbind(x2/sqrt(2)+rnorm(n2)/sqrt(2),
 data[(n1+1):N,]<- data[(n1+1):N,]+data2
 head(data) 
 ```
-
-There are 3 endpoints in this hypothetical historical dataset. The first
-40 rows are random observations from treatment 1 which follow standard
-normal distribution. The rest 60 rows are random observations from
-treatment 2 which follow normal distribution with mean 0.6.
 
 Now, suppose the goal is to attain 0.05 significance level with 90%
 power in two sided hypothesis testing. We pass these requirements into
@@ -317,7 +286,7 @@ N.GSTnoData(k, r0, GTE, sigma2, rho, alpha, beta, test.side)
 
 ### Compare to univariate analysis
 
-One advantages of using GTE is that it helps investigators obtain the
+One advantages of using GTE is that it helps investigators to obtain the
 desired power and significance level with smaller sample size compared
 to univariate analysis.
 
@@ -348,44 +317,13 @@ greater compared to sample size estimation based on GTE.
 In previous sections, we've determined appropriate $\bar{\theta_a}$ for
 the target magnitude of treatment effect, set up the hypotheses,
 computed the sample size needed, and now, we can test the treatment's
-global effect by determining test statistics using GST.parameter
-function.
-
-The p-value of the GST is obtained by comparing the value of Z to
-critical values from normal distribution.
-
-The example dataset is the same hypothetical historical data from
-previous section with 3 endpoints, first 40 rows contain observations in
-group 1 and rest 60 rows contain observations in group 2.
-
-```{r}
-head(data)
-```
-
-We can use GST.parameter function to calculate some useful parameters
-like treatment effect on individual outcomes, standard deviation of
-global treatment effect and etc.
-
-```{r}
-# get p-value from GST:
-x <- GST.parameter(data, n1)
-Z <- sum(x$theta) * sqrt(N) / 2 / sum(x$Sigma)
-Z
-1-pnorm(Z) # mismatch?
-```
-
-The p-value of the GST is obtained by comparing the value of Z to the
-critical values from the normal distribution. For example, Z = 1.645
-corresponds to p = 0.05 for the one-sided test and p = 0.10 for the
-two-sided test; Z = 1.960 corresponds to p = 0.025 for the one-sided
-test and p = 0.05 for the two-sided test.
-
-Alternatively, GST.pvalue function could directly provide one/two-sided
-non-parametric global statistical test p-values.
+global effect by calculating the p-value using GST() function.
 
 ```{r}
 GST(data=data, m=n1, test.side = 1)
 ```
+
+Combine the fact that the GTE value is 0.231, which is greater than 0 and the fact that p-value is 0.005, which is smaller than significance level of 0.05, we conclude that there is significant treatment benefit.
 
 GST.simu
 

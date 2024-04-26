@@ -112,7 +112,7 @@ testing of GTE using functions included in this package are illustrated
 in Part I, II and III respectively.</p>
 </div>
 <div class="section level2">
-<h2 id="data-preparation-">Data preparation.<a class="anchor" aria-label="anchor" href="#data-preparation-"></a>
+<h2 id="data-preparation">Data preparation<a class="anchor" aria-label="anchor" href="#data-preparation"></a>
 </h2>
 <p>Data has to been consistently coded to ensure that larger values
 indicate better outcomes for all measures.</p>
@@ -171,21 +171,6 @@ data to obtain a better parametric approximation, and only summary
 statistics of the transformed data were reported. Fortunately, this is
 not a problem when GTE is used to measure a treatment’s effect since the
 GTE is unchanged as it is computed only from the observation ranks.</p>
-<p>Here is a brief illustration of the GTE’s invariance property to
-nonlinear monotone transformation:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># take log-transformation of the data:</span></span>
-<span><span class="va">y1</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">x1</span><span class="op">)</span></span>
-<span><span class="va">y2</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span>
-<span><span class="co"># take square transformation of the data:</span></span>
-<span><span class="va">z1</span><span class="op">&lt;-</span> <span class="va">x1</span><span class="op">^</span><span class="fl">3</span></span>
-<span><span class="va">z2</span><span class="op">&lt;-</span> <span class="va">x2</span><span class="op">^</span><span class="fl">3</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt;                       GTE Effect size</span></span>
-<span><span class="co">#&gt; Normal             0.3056   0.4794255</span></span>
-<span><span class="co">#&gt; Log-transformed    0.3056   0.5697520</span></span>
-<span><span class="co">#&gt; square_transformed 0.3056   0.1708347</span></span></code></pre>
-<p>As the table shows, the GTE do not change after applying nonlinear
-monotone transformation while the effect size varies significantly.</p>
 <p>Example:</p>
 <p>Suppose we have hypothetical summary statistics using normal
 approximation as shown below.</p>
@@ -231,7 +216,7 @@ approximation as shown below.</p>
 <p>We can calculate the treatment effect <span class="math inline">\(\theta\)</span> of individual outcomes based on
 <span class="math inline">\(\theta = 2\Phi\left(\frac{\mu_1 -
 \mu_2}{\sqrt{\sigma_1^2 + \sigma_2^2}}\right) - 1\)</span> <span class="citation">(Huang, Woolson, and Granholm 2009)</span></p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="op">(</span><span class="va">mu2</span><span class="op">-</span><span class="va">mu1</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">stdev1</span><span class="op">^</span><span class="fl">2</span><span class="op">+</span><span class="va">stdev2</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span></span>
 <span><span class="va">theta</span></span>
 <span><span class="co">#&gt; [1]  0.06618462 -0.18633628 -0.36264811</span></span></code></pre></div>
@@ -260,6 +245,11 @@ of endpoints</p>
 <p>5. alpha: type I error to be controlled</p>
 <p>6. power: statistical power to be controlled</p>
 <p>7. GTE: global treatment effect where power is controlled at.</p>
+<p>Example: Suppose there are 3 endpoints in this hypothetical
+historical dataset. The first 40 rows are random observations from
+treatment 1 which follow standard normal distribution. The rest 60 rows
+are random observations from treatment 2 which follow normal
+distribution with mean 0.6.</p>
 <pre><code><span><span class="co">#&gt;             [,1]       [,2]       [,3]</span></span>
 <span><span class="co">#&gt; [1,] -0.89864943  1.1584776 -0.9020687</span></span>
 <span><span class="co">#&gt; [2,]  0.01888415  0.7652561 -0.6949915</span></span>
@@ -267,14 +257,10 @@ of endpoints</p>
 <span><span class="co">#&gt; [4,] -0.19589277  0.4339532 -0.6943823</span></span>
 <span><span class="co">#&gt; [5,] -0.58147571 -0.2015624 -0.2176982</span></span>
 <span><span class="co">#&gt; [6,]  1.18089467  0.8759767  1.4469131</span></span></code></pre>
-<p>There are 3 endpoints in this hypothetical historical dataset. The
-first 40 rows are random observations from treatment 1 which follow
-standard normal distribution. The rest 60 rows are random observations
-from treatment 2 which follow normal distribution with mean 0.6.</p>
 <p>Now, suppose the goal is to attain 0.05 significance level with 90%
 power in two sided hypothesis testing. We pass these requirements into
 the function:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># calculate sample size</span></span>
 <span><span class="fu"><a href="../reference/N.GSTwPilotData.html">N.GSTwPilotData</a></span><span class="op">(</span><span class="va">data</span>, m1<span class="op">=</span><span class="va">n1</span>, </span>
 <span>  r0<span class="op">=</span><span class="va">n2</span><span class="op">/</span><span class="va">n1</span>, test.side<span class="op">=</span><span class="fl">2</span>, alpha<span class="op">=</span><span class="fl">0.05</span>, power<span class="op">=</span><span class="fl">0.9</span>, GTE<span class="op">=</span><span class="cn">NA</span><span class="op">)</span></span>
@@ -353,7 +339,7 @@ calculate the global treatment effect by taking the average <span class="math in
 \min_{1 \leq v \leq K} (\theta_va^2)}{4}\right\}\)</span>. <span class="citation">(Huang, Woolson, and O’Brien 2008)</span></p>
 <p>Plug these values into the function, we can get sample size
 estimation for each group.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">GTE</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">theta</span><span class="op">)</span></span>
 <span><span class="va">sigma2</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">theta</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fl">4</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">12</span><span class="op">)</span> </span>
 <span><span class="co"># rest of the variables are pre-determined:</span></span>
@@ -378,13 +364,13 @@ estimation for each group.</p>
 <div class="section level3">
 <h3 id="compare-to-univariate-analysis">Compare to univariate analysis<a class="anchor" aria-label="anchor" href="#compare-to-univariate-analysis"></a>
 </h3>
-<p>One advantages of using GTE is that it helps investigators obtain the
-desired power and significance level with smaller sample size compared
-to univariate analysis.</p>
+<p>One advantages of using GTE is that it helps investigators to obtain
+the desired power and significance level with smaller sample size
+compared to univariate analysis.</p>
 <p>Here, we estimate the sample sizes needed in each arm of the group
 based on univariate analysis to obtain 90% power and 0.05 significance
 level using the same hypothetical summary data.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">N.Bon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="va">k</span><span class="op">)</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">k</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">d1</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">mu1</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">-</span><span class="va">mu2</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span><span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">stdev1</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,<span class="va">stdev2</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
@@ -407,40 +393,8 @@ much greater compared to sample size estimation based on GTE.</p>
 <p>In previous sections, we’ve determined appropriate <span class="math inline">\(\bar{\theta_a}\)</span> for the target magnitude
 of treatment effect, set up the hypotheses, computed the sample size
 needed, and now, we can test the treatment’s global effect by
-determining test statistics using GST.parameter function.</p>
-<p>The p-value of the GST is obtained by comparing the value of Z to
-critical values from normal distribution.</p>
-<p>The example dataset is the same hypothetical historical data from
-previous section with 3 endpoints, first 40 rows contain observations in
-group 1 and rest 60 rows contain observations in group 2.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
-<span><span class="co">#&gt;             [,1]       [,2]       [,3]</span></span>
-<span><span class="co">#&gt; [1,] -0.89864943  1.1584776 -0.9020687</span></span>
-<span><span class="co">#&gt; [2,]  0.01888415  0.7652561 -0.6949915</span></span>
-<span><span class="co">#&gt; [3,]  0.92773572  0.9146874  0.4385261</span></span>
-<span><span class="co">#&gt; [4,] -0.19589277  0.4339532 -0.6943823</span></span>
-<span><span class="co">#&gt; [5,] -0.58147571 -0.2015624 -0.2176982</span></span>
-<span><span class="co">#&gt; [6,]  1.18089467  0.8759767  1.4469131</span></span></code></pre></div>
-<p>We can use GST.parameter function to calculate some useful parameters
-like treatment effect on individual outcomes, standard deviation of
-global treatment effect and etc.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># get p-value from GST:</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GST.parameter.html">GST.parameter</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">n1</span><span class="op">)</span></span>
-<span><span class="va">Z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">theta</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">Sigma</span><span class="op">)</span></span>
-<span><span class="va">Z</span></span>
-<span><span class="co">#&gt; [1] 1.827365</span></span>
-<span><span class="fl">1</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span> <span class="co"># mismatch?</span></span>
-<span><span class="co">#&gt; [1] 0.03382247</span></span></code></pre></div>
-<p>The p-value of the GST is obtained by comparing the value of Z to the
-critical values from the normal distribution. For example, Z = 1.645
-corresponds to p = 0.05 for the one-sided test and p = 0.10 for the
-two-sided test; Z = 1.960 corresponds to p = 0.025 for the one-sided
-test and p = 0.05 for the two-sided test.</p>
-<p>Alternatively, GST.pvalue function could directly provide
-one/two-sided non-parametric global statistical test p-values.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+calculating the p-value using GST() function.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/GST.html">GST</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">data</span>, m<span class="op">=</span><span class="va">n1</span>, test.side <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $p.value</span></span>
 <span><span class="co">#&gt; [1] 0.004514176</span></span>
@@ -456,8 +410,12 @@ one/two-sided non-parametric global statistical test p-values.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $sigmaGTE</span></span>
 <span><span class="co">#&gt; [1] 0.09187831</span></span></code></pre></div>
+<p>Combine the fact that the GTE value is 0.231, which is greater than 0
+and the fact that p-value is 0.005, which is smaller than significance
+level of 0.05, we conclude that there is significant treatment
+benefit.</p>
 <p>GST.simu</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span><span class="op">&lt;-</span> <span class="fl">50</span> <span class="co"># sample size in treatment group 1</span></span>
 <span><span class="va">n</span><span class="op">&lt;-</span>  <span class="fl">50</span> <span class="co"># sample size in treatment group 2</span></span>
 <span><span class="va">k</span><span class="op">&lt;-</span> <span class="fl">20</span> <span class="co"># number of endpoints</span></span>

@@ -53,6 +53,8 @@ continuous case, GTE values approaching 1 implies an increased treatment
 2's global values over treatment 1, whereas GTE values approaching -1
 suggest a decreased treatment 2's global values over treatment 1.
 
+**expand more on tie effects**
+
 This package provides a simple useful method to compare a treatment's
 global effect on multiple outcomes. Once an appropriate $\bar{\theta}_a$
 value for the target magnitude of treatment effect is determined, one is
@@ -164,7 +166,7 @@ group 1 (control). For outcome 2, there is no global difference between
 group 1 and 2. For outcome 3, group 2 gives globally higher values than
 group 1.
 
-\*\* summary statistics in form of other distribution
+**summary statistics in form of other distribution**
 
 ## Part II. Determination of sample size
 
@@ -284,6 +286,10 @@ rho<- 0.1
 N.GSTnoData(k, r0, GTE, sigma2, rho, alpha, beta, test.side)
 ```
 
+
+**function to estimate rho (Spearman rank correlation)**
+**function to get GTE, sigma2, k in one step --> less manual input**
+
 ### Compare to univariate analysis
 
 One advantages of using GTE is that it helps investigators to obtain the
@@ -311,6 +317,8 @@ in outcome 3.
 
 As the result shows, sample sizes based on univariate analysis are much
 greater compared to sample size estimation based on GTE.
+
+**turn into function**
 
 ## Part III. Use of global statistical testing in data analysis
 

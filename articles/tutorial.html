@@ -102,6 +102,7 @@ indicates treamtent 2 gives globally smaller values than treatment 1. In
 continuous case, GTE values approaching 1 implies an increased treatment
 2’s global values over treatment 1, whereas GTE values approaching -1
 suggest a decreased treatment 2’s global values over treatment 1.</p>
+<p><strong>expand more on tie effects</strong></p>
 <p>This package provides a simple useful method to compare a treatment’s
 global effect on multiple outcomes. Once an appropriate <span class="math inline">\(\bar{\theta}_a\)</span> value for the target
 magnitude of treatment effect is determined, one is ready to set up
@@ -224,7 +225,7 @@ approximation as shown below.</p>
 group 1 (control). For outcome 2, there is no global difference between
 group 1 and 2. For outcome 3, group 2 gives globally higher values than
 group 1.</p>
-<p>** summary statistics in form of other distribution</p>
+<p><strong>summary statistics in form of other distribution</strong></p>
 </div>
 </div>
 <div class="section level2">
@@ -360,6 +361,9 @@ estimation for each group.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $N</span></span>
 <span><span class="co">#&gt; [1] 3</span></span></code></pre></div>
+<p><strong>function to estimate rho (Spearman rank correlation)</strong>
+<strong>function to get GTE, sigma2, k in one step –&gt; less manual
+input</strong></p>
 </div>
 <div class="section level3">
 <h3 id="compare-to-univariate-analysis">Compare to univariate analysis<a class="anchor" aria-label="anchor" href="#compare-to-univariate-analysis"></a>
@@ -385,6 +389,7 @@ participants in each arm in outcome 2, and 53 participants in each arm
 in outcome 3.</p>
 <p>As the result shows, sample sizes based on univariate analysis are
 much greater compared to sample size estimation based on GTE.</p>
+<p><strong>turn into function</strong></p>
 </div>
 </div>
 <div class="section level2">

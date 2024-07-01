@@ -53,8 +53,6 @@ continuous case, GTE values approaching 1 implies an increased treatment
 2's global values over treatment 1, whereas GTE values approaching -1
 suggest a decreased treatment 2's global values over treatment 1.
 
-**expand more on tie effects**
-
 This package provides a simple useful method to compare a treatment's
 global effect on multiple outcomes. Once an appropriate $\bar{\theta}_a$
 value for the target magnitude of treatment effect is determined, one is
@@ -81,24 +79,25 @@ statistics (if pilot data is not available).
 ### Global treatment effect estimation when there are pilot data
 
 When there are pilot data, we can directly use the theta function in
-this package to get an estimation of global treatment effect.
+this package to get an estimation of global treatment effect:
 
-Suppose $X1$ holds observations from group 1 and $X2$ holds observations
+Suppose $X_1$ holds observations from group 1 and $X_2$ holds observations
 from group 2, in which data are consistently coded. Then you can
-directly pass $X1$ and $X2$ into theta function in form of theta(X1,
+directly pass $X_1$ and $X_2$ into theta function in form of theta(X1,
 X2). This function will then calculates the estimated treatment effect
 for this outcome.
 
-Example:
+Example using simulated pilot data:
 
-x1 is 100 random samples from a t-distribution with 50 degrees of
-freedom, while x2 is 100 random samples from a t-distribution with 2
-degrees of freedom. We treat x1 as outcomes from group 1 and x2 as
+$X_1$ is 100 random samples from a t-distribution with 50 degrees of
+freedom, while $X_2$ is 100 random samples from a t-distribution with 2
+degrees of freedom. We treat $X_1$ as outcomes from group 1 and $X_2$ as
 outcomes from group 2 in pilot data. The $\bar{\theta}$ is calculated as
 follow:
 
 ```{r}
 set.seed(123)
+# simulate X1 and X2
 x1<- rt(100, 50, ncp = 10)
 x2<- rt(100, 2, ncp = 10.3)
 # use original data:
@@ -161,19 +160,17 @@ theta <- 2*pnorm((mu2-mu1)/sqrt(stdev1^2+stdev2^2))-1
 theta
 ```
 
-For outcome 1, group 2(treatment) gives globally smaller values than
+For outcome 1, group 2 (treatment) gives globally smaller values than
 group 1 (control). For outcome 2, there is no global difference between
 group 1 and 2. For outcome 3, group 2 gives globally higher values than
 group 1.
 
-**summary statistics in form of other distribution**
-
 ## Part II. Determination of sample size
 
-### Sample size estimation when some historical data are available
+### Sample size estimation when there are pilot data
 
 We could use N.GSTwPilotData function to derive the sample size when
-there is some pilot data.
+there are some pilot data.
 
 Functions required inputs are:
 
@@ -194,14 +191,13 @@ endpoints
 7\. GTE: global treatment effect where power is controlled at.
 
 
-Example: Suppose there are 3 endpoints in this hypothetical historical dataset. 
-The first 40 rows are random observations from treatment 1 which follow standard
-normal distribution. The rest 60 rows are random observations from
-treatment 2 which follow normal distribution with mean 0.6.
+Example using simulated pilot data: 
+
+Suppose there are 3 endpoints in this hypothetical historical dataset. The first 40 rows are random observations from treatment 1 which follow standard normal distribution. The rest 60 rows are random observations from treatment 2 which follow normal distribution with mean 0.6.
 
 
 ```{r echo=FALSE}
-# hypothetical pilot data
+# simulate hypothetical pilot data
 set.seed(123)
 k<- 3
 n1<- 40
@@ -287,9 +283,6 @@ N.GSTnoData(k, r0, GTE, sigma2, rho, alpha, beta, test.side)
 ```
 
 
-**function to estimate rho (Spearman rank correlation)**
-**function to get GTE, sigma2, k in one step --> less manual input**
-
 ### Compare to univariate analysis
 
 One advantages of using GTE is that it helps investigators to obtain the
@@ -318,7 +311,6 @@ in outcome 3.
 As the result shows, sample sizes based on univariate analysis are much
 greater compared to sample size estimation based on GTE.
 
-**turn into function**
 
 ## Part III. Use of global statistical testing in data analysis
 
@@ -333,18 +325,18 @@ GST(data=data, m=n1, test.side = 1)
 
 Combine the fact that the GTE value is 0.231, which is greater than 0 and the fact that p-value is 0.005, which is smaller than significance level of 0.05, we conclude that there is significant treatment benefit.
 
-GST.simu
+### Simulations
 
 ```{r}
-m<- 50 # sample size in treatment group 1
-n<-  50 # sample size in treatment group 2
-k<- 20 # number of endpoints
-r<- rep(1, k)
-rho<- 0.01 # correlation
-simu<- 5
+m <- 50 # sample size in treatment group 1
+n <- 50 # sample size in treatment group 2
+k <- 20 # number of endpoints
+r <- rep(1, k)
+rho <- 0.01 # correlation
+simu <- 5
 
-i<-1
-dataset<- array(rnorm((m+n)*k*simu,0,1) , dim=c(m+n,k, simu))
+i <- 1
+dataset <- array(rnorm((m+n)*k*simu,0,1), dim=c(m+n,k, simu))
  for (j in 2:k) #introduce correlation for group 1
  {dataset[1:m,j,]<- sqrt(rho)*dataset[1:m,1,]+sqrt(1-rho)*dataset[1:m,j,]
  }
@@ -353,13 +345,21 @@ for (j in 2:k) #introduce correlation for group 2
 { dataset[(m+1):(m+n),j,]<- sqrt(rho)*dataset[(m+1):(m+n),1,]+sqrt(1-rho)*
                        matrix(rnorm(n*simu,0,r[j]), nrow=n,ncol=simu)
 }
-delta<- 0.15 # introduce difference between group 1 and group 2
-dataset[(m+1):(m+n),,]<- dataset[(m+1):(m+n),,]+delta
-dim(dataset) #[1] 100  20   5
+delta <- 0.15 # introduce difference between group 1 and group 2
+dataset[(m+1):(m+n),,] <- dataset[(m+1):(m+n),,]+delta
+dim(dataset) #[1] 100  20   5: 20 endpoints in each simulation, 5 simulations in total
 
-# GST from simulated data:
-x<- GST.simu(data=dataset,m)
+x <- GST.simu(data=dataset, m)
+
+# global treatment effect from simulated data
+x$GTE
+# P value from simulated data
+x$p.GST
 ```
+
+These are the global treatment effects and p-values corresponding to 5 simulations.
+The global treatment effect is greater than zero in all 5 simulations, with 4 out of 5 p values smaller than 0.05, thus we conclude treatment group 2 has significant treatment benefit.
+
 
 ## References
 
